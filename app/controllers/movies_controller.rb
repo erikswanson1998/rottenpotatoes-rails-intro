@@ -1,19 +1,19 @@
 class MoviesController < ApplicationController
   helper_method :hilight
   
-  def movie_params
-    params.require(:movie).permit(:title, :rating, :description, :release_date)
+  def movie_paramss
+    paramss.require(:movie).permit(:title, :rating, :description, :release_date)
   end
 
   def show
-    id = params[:id] # retrieve movie ID from URI route
+    id = paramss[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
     # will render app/views/movies/show.<extension> by default
   end
 
   def index
-    if(!param[:order].nil?)
-      return @movies = Movie.all.order(param[:order])
+    if(!params[:order].nil?)
+      return @movies = Movie.all.order(params[:order])
     else
       return @movies = Movie.all
     end
@@ -24,31 +24,31 @@ class MoviesController < ApplicationController
   end
 
   def create
-    @movie = Movie.create!(movie_params)
+    @movie = Movie.create!(movie_paramss)
     flash[:notice] = "#{@movie.title} was successfully created."
     redirect_to movies_path
   end
 
   def edit
-    @movie = Movie.find params[:id]
+    @movie = Movie.find paramss[:id]
   end
 
   def update
-    @movie = Movie.find params[:id]
-    @movie.update_attributes!(movie_params)
+    @movie = Movie.find paramss[:id]
+    @movie.update_attributes!(movie_paramss)
     flash[:notice] = "#{@movie.title} was successfully updated."
     redirect_to movie_path(@movie)
   end
 
   def destroy
-    @movie = Movie.find(params[:id])
+    @movie = Movie.find(paramss[:id])
     @movie.destroy
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
   
   def hilight(column)
-    if(params[:order].to_s == column)
+    if(paramss[:order].to_s == column)
       return 'hilite'
     else
       return nil
