@@ -13,15 +13,17 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = ['G', 'PG', 'PG-13', 'R']
+    session[:ratings] = params[:ratings] unless params[:ratings].nil?
+    session[:order] = params[:order] unless params[:order].nil?
     
-    if(!params[:order].nil?)
-      if(!params[:ratings].nil?)
-        return @movies = Movie.where(rating: params[:ratings].keys).order(params[:order])
+    if(!session[:order].nil?)
+      if(!session[:ratings].nil?)
+        return @movies = Movie.where(rating: session[:ratings].keys).order(session[:order])
       else
-        return @movies = Movie.order(params[:order])
+        return @movies = Movie.order(session[:order])
       end
     elsif(!params[:ratings].nil?)
-      return @movies = Movie.where(rating: params[:ratings].keys)
+      return @movies = Movie.where(rating: session[:ratings].keys)
     else
       return @movies = Movie.all
     end
