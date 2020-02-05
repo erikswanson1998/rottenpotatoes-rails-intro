@@ -69,4 +69,6 @@ class MoviesController < ApplicationController
       return true
     end
     ratings.include? rating
+  end
+  
 end
