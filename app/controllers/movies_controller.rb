@@ -1,6 +1,6 @@
 class MoviesController < ApplicationController
   helper_method :hilight
-  
+  helper_method :is_rating
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
   end
@@ -62,4 +62,11 @@ class MoviesController < ApplicationController
       return nil
     end
   end
+  
+  def is_rating(rating)
+    ratings = params[:ratings]
+    if(ratings.nil?)
+      return true
+    end
+    ratings.include? rating
 end
