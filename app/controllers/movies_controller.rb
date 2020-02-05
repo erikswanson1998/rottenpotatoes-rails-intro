@@ -16,14 +16,14 @@ class MoviesController < ApplicationController
     session[:ratings] = params[:ratings] unless params[:ratings].nil?
     session[:order] = params[:order] unless params[:order].nil?
     
-    if(!session[:order].nil?)
-      if(!session[:ratings].nil?)
-        return @movies = Movie.where(rating: session[:ratings].keys).order(session[:order])
+    if(params[:order].nil? && !session[:order].nil?) || (params[:ratings].nil? && !session[:ratings].nil?)
+      redirect_to movies_path("order" => session[:order], "ratings" => session[:ratings])
+    elsif(!params[:ratings].nil? || !params[:order].nil?)
+      if(!params[:ratings].nil?)
+        return @movies = Movie.where(rating: session[:ratings].keys)
       else
-        return @movies = Movie.order(session[:order])
+        return @movies = Movie.all.order(session[:order])
       end
-    elsif(!params[:ratings].nil?)
-      return @movies = Movie.where(rating: session[:ratings].keys)
     else
       return @movies = Movie.all
     end
