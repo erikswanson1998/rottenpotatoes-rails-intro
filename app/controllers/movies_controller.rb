@@ -24,6 +24,8 @@ class MoviesController < ApplicationController
       else
         return @movies = Movie.all.order(session[:order])
       end
+    elsif (!session[:ratings].nil? || !session[:order].nil?)
+      redirect_to movies_path("order" => session[:order], "ratings" => session[:ratings])
     else
       return @movies = Movie.all
     end
